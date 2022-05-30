@@ -59,7 +59,7 @@ router.post("/", async (req, res) => {
     return res.status(400).send({ error: "Error creating new project:" + e });
   }
 });
-// provavelmente vou remover e fazer tudo pelo controler da taks
+
 router.put("/:projectId", async (req, res) => {
   try {
     const { title, tasks } = req.body;
@@ -72,19 +72,6 @@ router.put("/:projectId", async (req, res) => {
       },
       { new: true }
     );
-
-    // project.tasks = [];
-    // await Task.remove({ project: project._id });
-
-    // await Promise.all(
-    //   tasks.map(async (task) => {
-    //     const projectTask = new Task({ ...task, project: project._id });
-    //     await projectTask.save();
-    //     project.tasks.push(projectTask);
-    //   })
-    // );
-
-    // await project.save();
 
     const project = await Project.find({ user: req.userId }).populate([
       "user",

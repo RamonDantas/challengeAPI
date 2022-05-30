@@ -7,32 +7,6 @@ const router = express.Router();
 
 router.use(authMiddleware); //validating user token for this route
 
-// router.get("/", async (req, res) => {
-//   try {
-//     const task = await Task.find({ user: req.userId }).populate([
-//       "user",
-//       "tasks",
-//     ]);
-
-//     return res.send({ task });
-//   } catch (e) {
-//     return res.status(400).send({ error: "Error loading tasks:" + e });
-//   }
-// });
-
-// router.get("/:taskId", async (req, res) => {
-//   try {
-//     const task = await Task.findById(req.params.taskId).populate([
-//       "user",
-//       "tasks",
-//     ]);
-
-//     return res.send({ task });
-//   } catch (e) {
-//     return res.status(400).send({ error: "Error loading tasks:" + e });
-//   }
-// });
-
 router.post("/", async (req, res) => {
   try {
     const { title, project, finishedDate } = req.body;
