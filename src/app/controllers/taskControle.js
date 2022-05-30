@@ -57,16 +57,21 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:taskId", async (req, res) => {
+router.put("/", async (req, res) => {
   try {
-    const { title, completed } = req.body;
-    const task = await Task.findByIdAndUpdate(
-      req.params.taskId,
-      {
-        title,
-        completed,
-      },
-      { new: true }
+    const { taskList } = req.body;
+    const tasks = await Task.find({ _id: { $in: taskList } });
+
+    await Promise.all(
+      tasks.map(async (task) => {
+        await Task.findByIdAndUpdate(
+          task._id,
+          {
+            completed: !task.completed,
+          },
+          { new: true }
+        );
+      })
     );
 
     const project = await Project.find({ user: req.userId }).populate([
