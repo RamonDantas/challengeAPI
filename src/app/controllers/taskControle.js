@@ -46,7 +46,12 @@ router.post("/", async (req, res) => {
     projectUpdate.tasks.push(task._id);
     await projectUpdate.save();
 
-    return res.send({ projectUpdate });
+    const projectlist = await Project.find({ user: req.userId }).populate([
+      "user",
+      "tasks",
+    ]);
+
+    return res.send({ project: projectlist });
   } catch (e) {
     return res.status(400).send({ error: "Error creating new project:" + e });
   }
@@ -64,7 +69,12 @@ router.put("/:taskId", async (req, res) => {
       { new: true }
     );
 
-    return res.send({ task });
+    const project = await Project.find({ user: req.userId }).populate([
+      "user",
+      "tasks",
+    ]);
+
+    return res.send({ project });
   } catch (e) {
     return res.status(400).send({ error: "Error updating task:" + e });
   }
@@ -82,7 +92,12 @@ router.delete("/:taskId", async (req, res) => {
 
     await project.save();
 
-    return res.send({ ok: true });
+    const projectlist = await Project.find({ user: req.userId }).populate([
+      "user",
+      "tasks",
+    ]);
+
+    return res.send({ project: projectlist });
   } catch (e) {
     return res.status(400).send({ error: "Error deleting project:" + e });
   }
